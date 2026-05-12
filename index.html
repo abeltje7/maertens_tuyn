@@ -514,6 +514,364 @@
     letter-spacing: 0.06em;
   }
 
+/* ─── INTERACTIEVE WONINGEN-VERKENNER ─── */
+.verken { margin-top: 1rem; }
+
+/* Tabs */
+.verken-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(27,42,59,0.08);
+  padding-bottom: 1rem;
+}
+.verken-tab {
+  flex: 1 1 200px;
+  background: transparent;
+  border: 1px solid rgba(27,42,59,0.12);
+  border-radius: 4px;
+  padding: 0.9rem 1.1rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 220ms ease;
+  font-family: inherit;
+  color: var(--tekst);
+}
+.verken-tab:hover { background: rgba(232,224,208,0.25); border-color: rgba(27,42,59,0.25); }
+.verken-tab.active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--sand);
+}
+.verken-tab .vt-label {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.15rem;
+}
+.verken-tab .vt-meta {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+.verken-tab.active .vt-meta { opacity: 0.65; }
+.verken-tab .vt-eyebrow {
+  display:block; font-size: 0.72rem; letter-spacing:0.12em; text-transform:uppercase;
+  color: var(--steel); margin-bottom: 0.5rem;
+}
+
+/* Stage */
+.plan-stage {
+  position: relative;
+  background: var(--offwit);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(27,42,59,0.04);
+}
+.plan-pane {
+  display: none;
+  position: relative;
+  width: 100%;
+}
+.plan-pane.active { display: block; }
+.plan-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.plan-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Hotspots */
+.hot {
+  fill: rgba(74, 127, 165, 0.05);
+  stroke: rgba(74, 127, 165, 0.45);
+  stroke-width: 0.18;
+  stroke-dasharray: 0.6 0.4;
+  transition: all 200ms ease;
+  cursor: pointer;
+  pointer-events: all;
+}
+.hot:hover {
+  fill: rgba(74, 127, 165, 0.18);
+  stroke: rgba(27, 42, 59, 0.85);
+  stroke-width: 0.32;
+  stroke-dasharray: none;
+}
+.hot.is-active {
+  fill: rgba(61, 107, 80, 0.16);
+  stroke: var(--groen);
+  stroke-width: 0.38;
+  stroke-dasharray: none;
+}
+
+/* Number badges */
+.hot-label { pointer-events: none; transition: opacity 200ms ease; }
+.hot-label circle {
+  fill: var(--navy);
+  stroke: var(--sand);
+  stroke-width: 0.18;
+}
+.hot-label text {
+  fill: var(--sand);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.85px;
+  font-weight: 500;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  letter-spacing: 0;
+}
+
+/* Tooltip */
+.hot-tooltip {
+  position: absolute;
+  background: var(--navy);
+  color: var(--sand);
+  padding: 0.55rem 0.85rem;
+  border-radius: 3px;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, calc(-100% - 12px));
+  transition: opacity 160ms ease;
+  white-space: nowrap;
+  z-index: 5;
+  box-shadow: 0 4px 14px rgba(27,42,59,0.25);
+}
+.hot-tooltip.show { opacity: 1; }
+.hot-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 10px; height: 10px;
+  background: var(--navy);
+}
+.hot-tooltip .tt-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-right: 0.5rem;
+  letter-spacing: 0.05em;
+}
+.hot-tooltip .tt-meta { opacity: 0.75; font-size: 0.7rem; }
+
+/* Vliering pane */
+.vliering-card {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 0;
+  align-items: stretch;
+  background: var(--lsand);
+}
+.vliering-card img {
+  width: 100%; height: 100%; min-height: 360px; object-fit: cover;
+  display: block;
+}
+.vliering-info {
+  padding: 2.5rem 2.5rem;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.vliering-info h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem; font-weight: 400; letter-spacing: 0.02em;
+  color: var(--navy); margin-bottom: 0.85rem;
+}
+.vliering-info p { margin-bottom: 1.25rem; line-height: 1.7; }
+.vliering-btn {
+  align-self: flex-start;
+  background: var(--navy);
+  color: var(--sand);
+  border: none;
+  padding: 0.8rem 1.6rem;
+  font-family: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 200ms ease;
+}
+.vliering-btn:hover { background: var(--mid); }
+
+/* Legend */
+.verken-legend {
+  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+  margin-top: 1.25rem;
+  font-size: 0.78rem;
+  color: var(--grijs);
+  letter-spacing: 0.04em;
+}
+.leg-item { display: inline-flex; align-items: center; gap: 0.5rem; }
+.leg-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.leg-dot.avail { background: var(--groen); }
+.leg-dot.res { background: #C9A87C; }
+.leg-dot.verh { background: var(--grijs); opacity: 0.6; }
+.leg-divider { flex: 1; min-width: 16px; height: 1px; background: rgba(27,42,59,0.06); }
+.leg-types strong {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  color: var(--navy);
+  margin-right: 2px;
+  font-size: 0.9rem;
+}
+
+/* Drawer */
+.drawer-overlay {
+  position: fixed; inset: 0;
+  background: rgba(27, 42, 59, 0.4);
+  backdrop-filter: blur(2px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 260ms ease;
+  z-index: 998;
+}
+.drawer-overlay.open { opacity: 1; pointer-events: all; }
+.drawer {
+  position: fixed;
+  top: 0; right: 0;
+  width: min(480px, 100%);
+  height: 100vh;
+  background: var(--offwit);
+  z-index: 999;
+  transform: translateX(100%);
+  transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  box-shadow: -8px 0 28px rgba(27,42,59,0.18);
+}
+.drawer.open { transform: translateX(0); }
+.drawer-close {
+  position: absolute;
+  top: 1rem; right: 1.1rem;
+  background: rgba(27, 42, 59, 0.06);
+  border: none;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: var(--tekst);
+  line-height: 1; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 180ms ease;
+  z-index: 2;
+}
+.drawer-close:hover { background: rgba(27, 42, 59, 0.14); }
+
+.drawer-content { padding: 3rem 2.5rem 2.5rem; }
+.dw-eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--steel);
+  margin-bottom: 0.5rem;
+}
+.dw-headline {
+  display: flex; align-items: baseline; gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(27,42,59,0.08);
+}
+.dw-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4.5rem;
+  font-weight: 300;
+  color: var(--navy);
+  line-height: 1;
+  letter-spacing: 0;
+}
+.dw-titleblock { flex: 1; }
+.dw-type {
+  display: inline-block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  padding: 0.25rem 0.7rem;
+  border-radius: 2px;
+  background: var(--sand);
+  color: var(--navy);
+  margin-bottom: 0.4rem;
+}
+.dw-type.a { background: #E2DDD0; }
+.dw-type.b { background: #CCDAE3; }
+.dw-type.c { background: #D6C7AF; }
+.dw-titleblock h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 400; letter-spacing: 0.04em;
+  color: var(--tekst);
+}
+.dw-status {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  margin-top: 0.5rem;
+  font-size: 0.78rem; letter-spacing: 0.08em;
+  color: var(--groen);
+}
+.dw-status::before {
+  content:''; width: 8px; height: 8px; border-radius: 50%; background: var(--groen);
+}
+
+.dw-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(27,42,59,0.06); margin-bottom: 1.5rem; }
+.dw-stat { background: var(--offwit); padding: 1.1rem 0.9rem; }
+.dw-stat-label { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grijs); margin-bottom: 0.3rem; }
+.dw-stat-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.55rem; font-weight: 400; color: var(--navy);
+  letter-spacing: 0.02em;
+}
+.dw-stat-val small { font-size: 0.75rem; opacity: 0.55; margin-left: 0.2rem; }
+
+.dw-desc { margin-bottom: 1.5rem; line-height: 1.7; color: var(--tekst); }
+.dw-img { width: 100%; border-radius: 3px; display: block; margin-bottom: 1rem; }
+.dw-img-caption { font-size: 0.72rem; color: var(--grijs); letter-spacing: 0.04em; }
+
+.dw-foot {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(27,42,59,0.08);
+  font-size: 0.78rem; color: var(--grijs);
+  display: flex; justify-content: space-between;
+  letter-spacing: 0.04em;
+}
+.dw-nav {
+  display: flex; gap: 0.5rem;
+}
+.dw-nav button {
+  background: rgba(27,42,59,0.05);
+  border: none;
+  width: 32px; height: 32px;
+  border-radius: 2px;
+  cursor: pointer; font-size: 1rem;
+  color: var(--tekst);
+  transition: background 180ms ease;
+}
+.dw-nav button:hover { background: rgba(27,42,59,0.12); }
+.dw-nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* Vliering modal — same drawer system */
+.drawer.is-vliering .dw-stat-val { font-size: 1.15rem; }
+
+@media (max-width: 768px) {
+  .vliering-card { grid-template-columns: 1fr; }
+  .vliering-card img { min-height: 220px; }
+  .vliering-info { padding: 1.5rem; }
+  .drawer { width: 100%; }
+  .drawer-content { padding: 3rem 1.5rem 2rem; }
+  .verken-tab { flex: 1 1 100%; }
+  .dw-num { font-size: 3.5rem; }
+}
+
 </style>
 </head>
 <body>
@@ -884,6 +1242,107 @@
       </div>
     </div>
 
+    <!-- ─── INTERACTIEVE WONINGEN-VERKENNER ─── -->
+    <p class="section-label reveal" style="color:var(--steel);margin-top:4rem">Verken de woningen</p>
+    <p class="body-text reveal" style="max-width:60ch;margin-bottom:2rem">
+      Negen zelfstandige seniorenwoningen, verdeeld over begane grond en eerste verdieping. Klik op een woning op de plattegrond voor type, oppervlak, huurprijs en details.
+    </p>
+
+    <div class="verken reveal">
+      <!-- Floor tabs -->
+      <div class="verken-tabs" role="tablist">
+        <button class="verken-tab active" data-floor="bg" role="tab" aria-selected="true">
+          <span class="vt-label">Begane grond</span>
+          <span class="vt-meta">4 woningen · type B · B · A · C</span>
+        </button>
+        <button class="verken-tab" data-floor="1e" role="tab" aria-selected="false">
+          <span class="vt-label">Eerste verdieping</span>
+          <span class="vt-meta">5 woningen · type A · A · A · B · B</span>
+        </button>
+        <button class="verken-tab" data-floor="vl" role="tab" aria-selected="false">
+          <span class="vt-label">Vliering</span>
+          <span class="vt-meta">Logeerunit · 40 m² · gemeenschappelijk</span>
+        </button>
+      </div>
+
+      <!-- Plan viewer -->
+      <div class="plan-stage" id="planStage">
+        <!-- BG pane -->
+        <div class="plan-pane active" data-pane="bg">
+          <img class="plan-img" src="img/bg.jpg" alt="Plattegrond begane grond — Maerten's Tuyn" loading="lazy">
+          <svg class="plan-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <g class="hotspots">
+              <rect class="hot" data-id="4" x="14"   y="30" width="15"   height="29" rx="0.6" />
+              <rect class="hot" data-id="2" x="29"   y="30" width="12.5" height="37" rx="0.6" />
+              <rect class="hot" data-id="1" x="41.5" y="30" width="14.5" height="37" rx="0.6" />
+              <rect class="hot" data-id="3" x="14"   y="65" width="13"   height="23" rx="0.6" />
+            </g>
+            <g class="hotspot-labels">
+              <g class="hot-label" data-for="4"><circle cx="21.5"  cy="44.5" r="2.1" /><text x="21.5"  y="45.3">4</text></g>
+              <g class="hot-label" data-for="2"><circle cx="35.25" cy="48.5" r="2.1" /><text x="35.25" y="49.3">2</text></g>
+              <g class="hot-label" data-for="1"><circle cx="48.75" cy="48.5" r="2.1" /><text x="48.75" y="49.3">1</text></g>
+              <g class="hot-label" data-for="3"><circle cx="20.5"  cy="76.5" r="2.1" /><text x="20.5"  y="77.3">3</text></g>
+            </g>
+          </svg>
+        </div>
+        <!-- 1e pane -->
+        <div class="plan-pane" data-pane="1e">
+          <img class="plan-img" src="img/1e.jpg" alt="Plattegrond eerste verdieping — Maerten's Tuyn" loading="lazy">
+          <svg class="plan-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <g class="hotspots">
+              <rect class="hot" data-id="8" x="17" y="30" width="12" height="24" rx="0.6" />
+              <rect class="hot" data-id="7" x="29" y="30" width="13" height="24" rx="0.6" />
+              <rect class="hot" data-id="6" x="42" y="30" width="12" height="24" rx="0.6" />
+              <rect class="hot" data-id="5" x="54" y="30" width="16" height="24" rx="0.6" />
+              <rect class="hot" data-id="9" x="17" y="59" width="13" height="21" rx="0.6" />
+            </g>
+            <g class="hotspot-labels">
+              <g class="hot-label" data-for="8"><circle cx="23"  cy="42" r="2.1" /><text x="23"  y="42.8">8</text></g>
+              <g class="hot-label" data-for="7"><circle cx="35.5" cy="42" r="2.1" /><text x="35.5" y="42.8">7</text></g>
+              <g class="hot-label" data-for="6"><circle cx="48"  cy="42" r="2.1" /><text x="48"  y="42.8">6</text></g>
+              <g class="hot-label" data-for="5"><circle cx="62"  cy="42" r="2.1" /><text x="62"  y="42.8">5</text></g>
+              <g class="hot-label" data-for="9"><circle cx="23.5" cy="69.5" r="2.1" /><text x="23.5" y="70.3">9</text></g>
+            </g>
+          </svg>
+        </div>
+        <!-- Vliering pane -->
+        <div class="plan-pane" data-pane="vl">
+          <div class="vliering-card">
+            <img src="img/photo-zolder.jpg" alt="Vliering interieur" loading="lazy">
+            <div class="vliering-info">
+              <p class="vt-eyebrow">Vliering · ~40 m²</p>
+              <h3>Gedeelde logeerunit</h3>
+              <p>Een ruimte op de zolderverdieping die bewoners kunnen reserveren voor logés — familie en vrienden op bezoek. Niet apart verhuurbaar; onderdeel van de gemeenschappelijke voorzieningen.</p>
+              <button class="vliering-btn" id="vlieringBtn">Bekijk impressie</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tooltip floats above plan on hover -->
+        <div class="hot-tooltip" id="hotTooltip" aria-hidden="true">
+          <span class="tt-num"></span>
+          <span class="tt-meta"></span>
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div class="verken-legend">
+        <span class="leg-item"><span class="leg-dot avail"></span>Beschikbaar (9)</span>
+        <span class="leg-item"><span class="leg-dot res"></span>Gereserveerd (0)</span>
+        <span class="leg-item"><span class="leg-dot verh"></span>Verhuurd (0)</span>
+        <span class="leg-divider"></span>
+        <span class="leg-item leg-types"><strong>A</strong> compact studio · <strong>B</strong> 2-kamer · <strong>C</strong> ruim</span>
+      </div>
+    </div>
+
+    <!-- Detail drawer -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <aside class="drawer" id="drawer" aria-hidden="true" role="dialog">
+      <button class="drawer-close" aria-label="Sluiten">×</button>
+      <div class="drawer-content" id="drawerContent"><!-- JS populates --></div>
+    </aside>
+
+
     <p class="section-label reveal" style="color:var(--steel);margin-top:3rem">Programma van Eisen</p>
     <table class="data-table reveal">
       <thead><tr><th>Thema</th><th>Eis</th><th>Uitwerking</th></tr></thead>
@@ -1139,6 +1598,205 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+<script>
+/* ─── INTERACTIEVE WONINGEN-VERKENNER ─── */
+(function(){
+  const woningen = {
+    1: { type:'B', m2:50,   huur:1246, floor:'BG', floorLabel:'Begane grond', desc:'Twee-kamerwoning met open leefkeuken. Grenst aan binnentuin via gemeenschappelijke woonkamer. Geschikt voor één persoon of paar.', img:'img/voorbeeld-a.jpg', orient:'middenligging' },
+    2: { type:'B', m2:50,   huur:1246, floor:'BG', floorLabel:'Begane grond', desc:'Spiegelvariant van woning 1. Twee-kamer met eigen entree, slaapkamer en woonkeuken. Drempelvrij.', img:'img/voorbeeld-a.jpg', orient:'middenligging' },
+    3: { type:'A', m2:43.7, huur:1145, floor:'BG', floorLabel:'Begane grond', desc:'Compactere studio aan de westgevel. Geschikt voor één bewoner. Eigen entree direct naar de gemeenschappelijke buitenruimte.', img:'img/voorbeeld-a.jpg', orient:'westgevel' },
+    4: { type:'C', m2:78,   huur:1542, floor:'BG', floorLabel:'Begane grond', desc:'Ruimste woning van het project — geschikt voor twee bewoners. Aparte slaapkamer, ruime leefkeuken en eigen buitenruimte. Voldoet aan Woonkeur Certificaat D.', img:'img/voorbeeld-c.jpg', orient:'volledige diepte' },
+    5: { type:'B', m2:50,   huur:1246, floor:'1e', floorLabel:'Eerste verdieping', desc:'Twee-kamerwoning aan de oostzijde. Uitkijk over patio. Bereikbaar via platformlift in bestaand trappengat.', img:'img/voorbeeld-a.jpg', orient:'oostgevel' },
+    6: { type:'A', m2:40,   huur:1145, floor:'1e', floorLabel:'Eerste verdieping', desc:'Compacte studio aan de centrale corridor. Slim ingedeeld met inbouwkast en aparte natte cel.', img:'img/voorbeeld-a.jpg', orient:'middenligging' },
+    7: { type:'B', m2:47.5, huur:1246, floor:'1e', floorLabel:'Eerste verdieping', desc:'Twee-kamerwoning aan de noordgevel. Lichte leefruimte met grote raampartij.', img:'img/voorbeeld-a.jpg', orient:'noordgevel' },
+    8: { type:'A', m2:42,   huur:1145, floor:'1e', floorLabel:'Eerste verdieping', desc:'Studio met aparte slaap- en leefhoek. Trappenhuis-zijde, dus extra geluidsisolatie.', img:'img/voorbeeld-a.jpg', orient:'noordwesthoek' },
+    9: { type:'A', m2:36,   huur:1145, floor:'1e', floorLabel:'Eerste verdieping', desc:'Compactste woning, met directe lichtinval. Aparte vleugel — eigen sfeer, dichtbij gedeelde voorzieningen.', img:'img/voorbeeld-a.jpg', orient:'zuidvleugel' }
+  };
+
+  const typeMeta = {
+    A: { name:'Type A · compact', features:['1 persoon','natte cel','keuken-kitchenette'] },
+    B: { name:'Type B · 2-kamer',  features:['1–2 personen','aparte slaapkamer','volwaardige keuken'] },
+    C: { name:'Type C · ruim',     features:['1–2 personen','aparte slaapkamer','leefkeuken','buitenruimte'] }
+  };
+
+  const tabs = document.querySelectorAll('.verken-tab');
+  const panes = document.querySelectorAll('.plan-pane');
+  const tooltip = document.getElementById('hotTooltip');
+  const stage = document.getElementById('planStage');
+  const drawer = document.getElementById('drawer');
+  const drawerOverlay = document.getElementById('drawerOverlay');
+  const drawerContent = document.getElementById('drawerContent');
+
+  // Tab switching
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => { x.classList.remove('active'); x.setAttribute('aria-selected','false'); });
+    panes.forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    t.setAttribute('aria-selected','true');
+    const f = t.dataset.floor;
+    document.querySelector(`.plan-pane[data-pane="${f}"]`).classList.add('active');
+    hideTooltip();
+  }));
+
+  // Hotspot interactions
+  function setupHotspots(){
+    document.querySelectorAll('.hot').forEach(h => {
+      const id = h.dataset.id;
+      h.addEventListener('mouseenter', (e) => showTooltip(e, id));
+      h.addEventListener('mousemove', moveTooltip);
+      h.addEventListener('mouseleave', hideTooltip);
+      h.addEventListener('click', () => openDrawer(id));
+      h.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openDrawer(id); } });
+      h.setAttribute('tabindex', '0');
+      h.setAttribute('role', 'button');
+      h.setAttribute('aria-label', `Woning ${id} — bekijk details`);
+    });
+  }
+
+  function showTooltip(e, id){
+    const w = woningen[id];
+    tooltip.querySelector('.tt-num').textContent = `Woning ${id}`;
+    tooltip.querySelector('.tt-meta').textContent = `Type ${w.type} · ${w.m2} m² · €${w.huur.toLocaleString('nl-NL')}/mnd`;
+    tooltip.classList.add('show');
+    moveTooltip(e);
+  }
+  function moveTooltip(e){
+    const rect = stage.getBoundingClientRect();
+    tooltip.style.left = (e.clientX - rect.left) + 'px';
+    tooltip.style.top  = (e.clientY - rect.top) + 'px';
+  }
+  function hideTooltip(){ tooltip.classList.remove('show'); }
+
+  function openDrawer(id){
+    if(id === 'vl'){ renderVliering(); }
+    else { renderWoning(id); }
+    document.querySelectorAll('.hot').forEach(h => h.classList.toggle('is-active', h.dataset.id === id));
+    drawer.classList.add('open');
+    drawer.setAttribute('aria-hidden','false');
+    drawerOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    drawer.setAttribute('aria-hidden','true');
+    drawerOverlay.classList.remove('open');
+    drawer.classList.remove('is-vliering');
+    document.querySelectorAll('.hot').forEach(h => h.classList.remove('is-active'));
+    document.body.style.overflow = '';
+  }
+
+  function renderWoning(id){
+    const w = woningen[id];
+    const tm = typeMeta[w.type];
+    const features = tm.features.map(f => `<li>${f}</li>`).join('');
+    drawerContent.innerHTML = `
+      <p class="dw-eyebrow">Maerten's Tuyn · ${w.floorLabel}</p>
+      <div class="dw-headline">
+        <span class="dw-num">${id}</span>
+        <div class="dw-titleblock">
+          <span class="dw-type ${w.type.toLowerCase()}">${tm.name}</span>
+          <h3>Woning ${id}</h3>
+          <span class="dw-status">Beschikbaar</span>
+        </div>
+      </div>
+
+      <div class="dw-stats">
+        <div class="dw-stat">
+          <div class="dw-stat-label">Oppervlak</div>
+          <div class="dw-stat-val">${String(w.m2).replace('.',',')}<small> m²</small></div>
+        </div>
+        <div class="dw-stat">
+          <div class="dw-stat-label">Huurprijs</div>
+          <div class="dw-stat-val">€${w.huur.toLocaleString('nl-NL')}<small> / mnd</small></div>
+        </div>
+        <div class="dw-stat">
+          <div class="dw-stat-label">Verdieping</div>
+          <div class="dw-stat-val" style="font-size:1.15rem">${w.floorLabel}</div>
+        </div>
+        <div class="dw-stat">
+          <div class="dw-stat-label">Ligging</div>
+          <div class="dw-stat-val" style="font-size:1.15rem">${w.orient}</div>
+        </div>
+      </div>
+
+      <p class="dw-desc">${w.desc}</p>
+
+      <img class="dw-img" src="${w.img}" alt="Indicatieve plattegrond ${tm.name}" loading="lazy">
+      <p class="dw-img-caption">Indicatieve plattegrond — ${tm.name}. Definitieve maten kunnen per woning licht afwijken.</p>
+
+      <div class="dw-foot">
+        <span>Toegankelijkheid: Woonkeur C+ · Energielabel A (na transformatie)</span>
+        <div class="dw-nav">
+          <button id="dwPrev" aria-label="Vorige woning">←</button>
+          <button id="dwNext" aria-label="Volgende woning">→</button>
+        </div>
+      </div>
+    `;
+    drawer.classList.remove('is-vliering');
+    const ids = Object.keys(woningen).map(Number);
+    const idx = ids.indexOf(Number(id));
+    document.getElementById('dwPrev').onclick = () => openDrawer(String(ids[(idx - 1 + ids.length) % ids.length]));
+    document.getElementById('dwNext').onclick = () => openDrawer(String(ids[(idx + 1) % ids.length]));
+  }
+
+  function renderVliering(){
+    drawerContent.innerHTML = `
+      <p class="dw-eyebrow">Maerten's Tuyn · Vliering</p>
+      <div class="dw-headline">
+        <span class="dw-num" style="font-size:3.2rem">VL</span>
+        <div class="dw-titleblock">
+          <span class="dw-type" style="background:#D6CDC0">Gemeenschappelijk</span>
+          <h3>Logeerunit</h3>
+          <span class="dw-status" style="color:var(--steel)">
+            <span style="background:var(--steel);width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:0.4rem"></span>
+            Niet apart verhuurbaar
+          </span>
+        </div>
+      </div>
+
+      <div class="dw-stats">
+        <div class="dw-stat">
+          <div class="dw-stat-label">Oppervlak</div>
+          <div class="dw-stat-val">40<small> m²</small></div>
+        </div>
+        <div class="dw-stat">
+          <div class="dw-stat-label">Verdieping</div>
+          <div class="dw-stat-val" style="font-size:1.15rem">Zolder</div>
+        </div>
+        <div class="dw-stat">
+          <div class="dw-stat-label">Gebruik</div>
+          <div class="dw-stat-val" style="font-size:1.15rem">Logés</div>
+        </div>
+        <div class="dw-stat">
+          <div class="dw-stat-label">Reservering</div>
+          <div class="dw-stat-val" style="font-size:1.15rem">Per nacht</div>
+        </div>
+      </div>
+
+      <p class="dw-desc">De vliering is omgebouwd tot een gemeenschappelijke logeerunit. Bewoners kunnen hier hun familie of vrienden laten overnachten — een belangrijke voorziening voor de doelgroep die niet altijd ruimte heeft in de eigen woning. Volledig drempelvrij bereikbaar via de platformlift.</p>
+
+      <img class="dw-img" src="img/photo-zolder.jpg" alt="Vliering — interieur met dakkapellen en houten balken" loading="lazy">
+      <p class="dw-img-caption">Bestaande staat — de karakteristieke kapconstructie blijft behouden en wordt licht geïsoleerd.</p>
+
+      <div class="dw-foot">
+        <span>Onderdeel van gemeenschappelijke voorzieningen · 1 nacht reservering per bewoner</span>
+      </div>
+    `;
+    drawer.classList.add('is-vliering');
+  }
+
+  // Vliering big button → opens drawer
+  document.getElementById('vlieringBtn').addEventListener('click', () => openDrawer('vl'));
+
+  // Close handlers
+  drawer.querySelector('.drawer-close').addEventListener('click', closeDrawer);
+  drawerOverlay.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer(); });
+
+  setupHotspots();
+})();
+
 </script>
 </body>
 </html>
