@@ -872,6 +872,88 @@
   .dw-num { font-size: 3.5rem; }
 }
 
+
+  /* ─── HAMBURGER (mobile nav) ─── */
+  .nav-toggle {
+    display: none;
+    background: none; border: none; cursor: pointer;
+    flex-direction: column; gap: 4px; padding: 7px 4px;
+  }
+  .nav-toggle span {
+    display: block; width: 23px; height: 1.6px;
+    background: var(--sand); transition: transform 0.3s ease, opacity 0.2s ease;
+  }
+  .nav-toggle.open span:nth-child(1) { transform: translateY(5.6px) rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.open span:nth-child(3) { transform: translateY(-5.6px) rotate(-45deg); }
+
+  /* ─── MOBILE LAYOUT ─── */
+  @media (max-width: 720px) {
+    nav { padding: 0 1.25rem; }
+    .nav-toggle { display: flex; }
+    .nav-links {
+      position: fixed; top: 56px; left: 0; right: 0;
+      background: rgba(27,42,59,0.985);
+      backdrop-filter: blur(8px);
+      flex-direction: column; gap: 0;
+      padding: 0.25rem 1.5rem 0.75rem;
+      transform: translateY(-135%);
+      transition: transform 0.34s cubic-bezier(0.4,0,0.2,1);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      max-height: calc(100vh - 56px); overflow-y: auto;
+      z-index: 90;
+    }
+    .nav-links.open { transform: translateY(0); }
+    .nav-links li { width: 100%; }
+    .nav-links a {
+      display: block; padding: 0.95rem 0.25rem; font-size: 0.82rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .nav-links li:last-child a { border-bottom: none; }
+
+    /* Hero */
+    .hero-content { padding: 0 1.5rem 3.5rem; }
+    .hero-subtitle { font-size: 1.15rem; }
+    .hero-meta { font-size: 0.78rem; }
+    .hero-scroll { right: 1.5rem; bottom: 1.25rem; }
+
+    /* Sections + spacing */
+    .snapshot { padding: 2.75rem 1.25rem; }
+    .sec-header { padding: 2.25rem 1.25rem 0; gap: 0.75rem; }
+    .sec-num { font-size: 2.4rem; }
+    .sec-title { font-size: 1.55rem; }
+    .content-section { padding: 2.5rem 1.25rem; }
+
+    /* Typography */
+    body { font-size: 15.5px; }
+    .lead { font-size: 1.15rem; }
+    .h2 { font-size: 1.5rem; }
+
+    /* Grids -> stack */
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .two-col { grid-template-columns: 1fr; gap: 2rem; }
+    .three-col { grid-template-columns: 1fr !important; }
+    .inline-stats { grid-template-columns: 1fr; }
+    .planning-grid { grid-template-columns: 1fr; }
+    .swot-grid { grid-template-columns: 1fr; }
+    .inline-stat-val { font-size: 2.4rem; }
+
+    /* Tables -> horizontal scroll */
+    .data-table, .scenario-table {
+      display: block; width: 100%; overflow-x: auto;
+      -webkit-overflow-scrolling: touch; font-size: 0.8rem;
+    }
+    .data-table th, .data-table td,
+    .scenario-table th, .scenario-table td { white-space: nowrap; }
+
+    /* Before/after slider */
+    .slider-after, .slider-before img { height: 300px; }
+
+    /* Verken section tweaks */
+    .verken-tab { flex: 1 1 100%; }
+    .hot-tooltip { font-size: 0.72rem; padding: 0.45rem 0.7rem; }
+  }
+
 </style>
 </head>
 <body>
@@ -879,7 +961,8 @@
 <!-- NAV -->
 <nav>
   <a class="nav-brand" href="#">Maerten's Tuyn</a>
-  <ul class="nav-links">
+  <button class="nav-toggle" id="navToggle" aria-label="Menu openen" aria-expanded="false"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
     <li><a href="#aanleiding">Aanleiding</a></li>
     <li><a href="#locatie">Locatie</a></li>
     <li><a href="#doelgroep">Doelgroep</a></li>
@@ -1797,6 +1880,24 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   setupHotspots();
 })();
 
+</script>
+<script>
+(function(){
+  var t = document.getElementById('navToggle');
+  var l = document.getElementById('navLinks');
+  if(!t || !l) return;
+  t.addEventListener('click', function(){
+    var open = l.classList.toggle('open');
+    t.classList.toggle('open', open);
+    t.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  l.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      l.classList.remove('open'); t.classList.remove('open');
+      t.setAttribute('aria-expanded','false');
+    });
+  });
+})();
 </script>
 </body>
 </html>
