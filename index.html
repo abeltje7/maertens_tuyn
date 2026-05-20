@@ -938,12 +938,20 @@
     .swot-grid { grid-template-columns: 1fr; }
     .inline-stat-val { font-size: 2.4rem; }
 
-    /* Tables -> horizontal scroll */
-    .data-table, .scenario-table {
-      display: block; width: 100%; overflow-x: auto;
-      -webkit-overflow-scrolling: touch; font-size: 0.8rem;
+    /* Prevent any sideways page scroll / cut-off */
+    html, body { overflow-x: hidden; max-width: 100%; }
+
+    /* Label/value tables wrap to fit the screen */
+    .data-table { width: 100%; font-size: 0.8rem; table-layout: fixed; }
+    .data-table th, .data-table td {
+      white-space: normal; overflow-wrap: anywhere;
+      padding: 0.6rem 0.65rem; vertical-align: top;
     }
-    .data-table th, .data-table td,
+    /* Numeric scenario table stays horizontally scrollable */
+    .scenario-table {
+      display: block; width: 100%; overflow-x: auto;
+      -webkit-overflow-scrolling: touch; font-size: 0.78rem;
+    }
     .scenario-table th, .scenario-table td { white-space: nowrap; }
 
     /* Before/after slider */
