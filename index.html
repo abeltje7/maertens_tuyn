@@ -242,7 +242,7 @@
     width: 50%;
   }
   .slider-before img {
-    height: 480px; width: 100vw; max-width: 100%;
+    height: 480px; width: 100%; max-width: none;
     object-fit: cover; object-position: center;
   }
   .slider-handle {
@@ -1309,34 +1309,84 @@
       <div>
         <div class="two-col" style="grid-template-columns:1fr 1fr;gap:1rem">
           <div>
-            <div class="placeholder">
-              <span>[ VOLGT ]</span>
-              <span>Entree + hal + lift</span>
-            </div>
-            <p class="fig-caption">Impressie entree en platformlift</p>
+            <img class="img-medium" src="img/impr-entree.jpg" alt="Entreehal met platformlift en trap">
+            <p class="fig-caption">Entreehal met platformlift naast het bestaande trappenhuis</p>
           </div>
           <div>
-            <div class="placeholder">
-              <span>[ VOLGT ]</span>
-              <span>Corridor 1e verdieping</span>
-            </div>
-            <p class="fig-caption">Impressie corridor</p>
+            <img class="img-medium" src="img/corridor-after.jpg" alt="Corridor eerste verdieping">
+            <p class="fig-caption">Corridor eerste verdieping na transformatie</p>
           </div>
           <div>
-            <div class="placeholder">
-              <span>[ VOLGT ]</span>
-              <span>Plattegrond Type B ~50m²</span>
-            </div>
-            <p class="fig-caption">Voorbeeldwoning Type B</p>
+            <img class="img-medium" src="img/impr-living-binnen.jpg" alt="Woonkamer met zicht naar buiten">
+            <p class="fig-caption">Woonkamer met zicht naar de gemeenschappelijke buitenruimte</p>
           </div>
           <div>
-            <div class="placeholder">
-              <span>[ VOLGT ]</span>
-              <span>Plattegrond Type C 78m²</span>
-            </div>
-            <p class="fig-caption">Voorbeeldwoning Type C</p>
+            <img class="img-medium" src="img/impr-patio2.jpg" alt="Patio met omliggende bebouwing">
+            <p class="fig-caption">Patio in samenhang met de omliggende bebouwing</p>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- ─── VOORBEELDWONINGEN ─── -->
+    <p class="section-label reveal" style="color:var(--steel);margin-top:4rem">Voorbeeldwoning · begane grond · 78 m²</p>
+    <p class="body-text reveal" style="max-width:62ch;margin-bottom:1.5rem">Woning 4 (voorheen 25-M) als referentie voor de ruime gelijkvloerse appartementen: eigen entree aan de voortuin, een woonkamer met open leefkeuken, een slaapkamer en een levensloopbestendige badkamer.</p>
+    <div class="two-col reveal" style="gap:1rem;margin-bottom:1rem">
+      <div>
+        <img class="img-medium" src="img/vw-bg-buiten.jpg" alt="Buitenaanzicht woning 4">
+        <p class="fig-caption">Buitenaanzicht met eigen entree aan de voortuin</p>
+      </div>
+      <div>
+        <img class="img-medium" src="img/vw-bg-living.jpg" alt="Woonkamer voorbeeldwoning begane grond">
+        <p class="fig-caption">Woonkamer met open leefkeuken</p>
+      </div>
+      <div>
+        <img class="img-medium" src="img/vw-bg-slaapkamer.jpg" alt="Slaapkamer voorbeeldwoning begane grond">
+        <p class="fig-caption">Slaapkamer</p>
+      </div>
+      <div>
+        <img class="img-plan" src="img/vw-bg-plattegrond.jpg" alt="Plattegrond voorbeeldwoning 78 m2">
+        <p class="fig-caption">Plattegrond, circa 78 m²</p>
+      </div>
+    </div>
+
+    <p class="section-label reveal" style="color:var(--steel);margin-top:3rem">Voorbeeldwoning · eerste verdieping · 40 m²</p>
+    <p class="body-text reveal" style="max-width:62ch;margin-bottom:1.5rem">Referentie voor de compactere appartementen op de verdieping: een efficiënte indeling met eigen badkamer, ontsloten via de centrale corridor en de platformlift.</p>
+    <div class="three-col reveal" style="gap:1rem;margin-bottom:1rem">
+      <div>
+        <img class="img-medium" src="img/vw-1e-render.jpg" alt="Interieur voorbeeldwoning eerste verdieping">
+        <p class="fig-caption">Impressie interieur</p>
+      </div>
+      <div>
+        <img class="img-medium" src="img/vw-1e-boven.jpg" alt="Bovenaanzicht voorbeeldwoning">
+        <p class="fig-caption">Bovenaanzicht van de indeling</p>
+      </div>
+      <div>
+        <img class="img-plan" src="img/vw-1e-plattegrond.jpg" alt="Plattegrond voorbeeldwoning 40 m2">
+        <p class="fig-caption">Plattegrond, circa 40 m²</p>
+      </div>
+    </div>
+
+    <!-- ─── VOOR & NA SLIDERS ─── -->
+    <p class="section-label reveal" style="color:var(--steel);margin-top:3rem">Voor &amp; na · sleep de slider</p>
+    <div class="two-col reveal" style="gap:2rem;margin-bottom:1rem">
+      <div>
+        <div class="slider-container ba-slider">
+          <img class="slider-after" src="img/corridor-after.jpg" alt="Living richting corridor na transformatie">
+          <div class="slider-before"><img src="img/corridor-before.jpg" alt="Living richting corridor bestaand"></div>
+          <div class="slider-handle"></div>
+        </div>
+        <div class="slider-labels"><span>← Bestaand</span><span>Na transformatie →</span></div>
+        <p class="fig-caption">Living richting corridor</p>
+      </div>
+      <div>
+        <div class="slider-container ba-slider">
+          <img class="slider-after" src="img/vliering-after.jpg" alt="Vliering na transformatie">
+          <div class="slider-before"><img src="img/vliering-before.jpg" alt="Vliering bestaand"></div>
+          <div class="slider-handle"></div>
+        </div>
+        <div class="slider-labels"><span>← Bestaand</span><span>Na transformatie →</span></div>
+        <p class="fig-caption">Vliering, ingericht als logeerunit</p>
       </div>
     </div>
 
@@ -1656,25 +1706,29 @@
 </footer>
 
 <script>
-// ── SLIDER ────────────────────────────────────────────────────────────────
-const slider = document.getElementById('slider');
-const before = document.getElementById('sliderBefore');
-const handle = document.getElementById('sliderHandle');
-let dragging = false;
-
-function setSlider(x) {
-  const rect = slider.getBoundingClientRect();
-  let pct = Math.max(5, Math.min(95, (x - rect.left) / rect.width * 100));
-  before.style.width = pct + '%';
-  handle.style.left = pct + '%';
-}
-
-slider.addEventListener('mousedown', e => { dragging = true; setSlider(e.clientX); });
-slider.addEventListener('touchstart', e => { dragging = true; setSlider(e.touches[0].clientX); }, {passive:true});
-window.addEventListener('mousemove', e => { if (dragging) setSlider(e.clientX); });
-window.addEventListener('touchmove', e => { if (dragging) setSlider(e.touches[0].clientX); }, {passive:true});
-window.addEventListener('mouseup', () => dragging = false);
-window.addEventListener('touchend', () => dragging = false);
+// ── BEFORE/AFTER SLIDERS (generiek, meerdere op de pagina) ─────────────────
+document.querySelectorAll('.slider-container').forEach(function(slider){
+  var before = slider.querySelector('.slider-before');
+  var handle = slider.querySelector('.slider-handle');
+  if(!before || !handle) return;
+  var beforeImg = before.querySelector('img');
+  var dragging = false;
+  function sizeImg(){ if(beforeImg){ beforeImg.style.width = slider.clientWidth + 'px'; } }
+  function setSlider(x){
+    var rect = slider.getBoundingClientRect();
+    var pct = Math.max(5, Math.min(95, (x - rect.left) / rect.width * 100));
+    before.style.width = pct + '%';
+    handle.style.left = pct + '%';
+  }
+  sizeImg();
+  window.addEventListener('resize', sizeImg);
+  slider.addEventListener('mousedown', function(e){ dragging = true; setSlider(e.clientX); });
+  slider.addEventListener('touchstart', function(e){ dragging = true; setSlider(e.touches[0].clientX); }, {passive:true});
+  window.addEventListener('mousemove', function(e){ if(dragging) setSlider(e.clientX); });
+  window.addEventListener('touchmove', function(e){ if(dragging) setSlider(e.touches[0].clientX); }, {passive:true});
+  window.addEventListener('mouseup', function(){ dragging = false; });
+  window.addEventListener('touchend', function(){ dragging = false; });
+});
 
 // ── SCROLL REVEAL ─────────────────────────────────────────────────────────
 const observer = new IntersectionObserver(entries => {
