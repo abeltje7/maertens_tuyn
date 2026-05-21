@@ -1370,17 +1370,12 @@
           <img class="plan-img" src="img/bg.jpg" alt="Plattegrond begane grond · Maerten's Tuyn" loading="lazy">
           <svg class="plan-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
             <g class="hotspots">
-              <rect class="hot" data-id="4" x="14"   y="30" width="15"   height="29" rx="0.6" />
-              <rect class="hot" data-id="2" x="29"   y="30" width="12.5" height="37" rx="0.6" />
-              <rect class="hot" data-id="1" x="41.5" y="30" width="14.5" height="37" rx="0.6" />
-              <rect class="hot" data-id="3" x="14"   y="65" width="13"   height="23" rx="0.6" />
+              <polygon class="hot" data-id="4" points="13,18 30,18 30,43 13,43" />
+              <polygon class="hot" data-id="2" points="33,18 46,18 46,52 33,52" />
+              <polygon class="hot" data-id="1" points="46,18 58,18 58,52 46,52" />
+              <polygon class="hot" data-id="3" points="13,54 27,54 27,76 13,76" />
             </g>
-            <g class="hotspot-labels">
-              <g class="hot-label" data-for="4"><circle cx="21.5"  cy="44.5" r="2.1" /><text x="21.5"  y="45.3">4</text></g>
-              <g class="hot-label" data-for="2"><circle cx="35.25" cy="48.5" r="2.1" /><text x="35.25" y="49.3">2</text></g>
-              <g class="hot-label" data-for="1"><circle cx="48.75" cy="48.5" r="2.1" /><text x="48.75" y="49.3">1</text></g>
-              <g class="hot-label" data-for="3"><circle cx="20.5"  cy="76.5" r="2.1" /><text x="20.5"  y="77.3">3</text></g>
-            </g>
+            <g class="hotspot-labels"></g>
           </svg>
         </div>
         <!-- 1e pane -->
@@ -1388,32 +1383,24 @@
           <img class="plan-img" src="img/1e.jpg" alt="Plattegrond eerste verdieping · Maerten's Tuyn" loading="lazy">
           <svg class="plan-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
             <g class="hotspots">
-              <rect class="hot" data-id="8" x="17" y="30" width="12" height="24" rx="0.6" />
-              <rect class="hot" data-id="7" x="29" y="30" width="13" height="24" rx="0.6" />
-              <rect class="hot" data-id="6" x="42" y="30" width="12" height="24" rx="0.6" />
-              <rect class="hot" data-id="5" x="54" y="30" width="16" height="24" rx="0.6" />
-              <rect class="hot" data-id="9" x="17" y="59" width="13" height="21" rx="0.6" />
+              <polygon class="hot" data-id="8" points="13,17 29,17 29,45 13,45" />
+              <polygon class="hot" data-id="7" points="29,17 47,17 47,45 29,45" />
+              <polygon class="hot" data-id="6" points="47,17 58,17 58,45 47,45" />
+              <polygon class="hot" data-id="5" points="58,17 72,17 72,45 58,45" />
+              <polygon class="hot" data-id="9" points="13,52 29,52 29,75 13,75" />
             </g>
-            <g class="hotspot-labels">
-              <g class="hot-label" data-for="8"><circle cx="23"  cy="42" r="2.1" /><text x="23"  y="42.8">8</text></g>
-              <g class="hot-label" data-for="7"><circle cx="35.5" cy="42" r="2.1" /><text x="35.5" y="42.8">7</text></g>
-              <g class="hot-label" data-for="6"><circle cx="48"  cy="42" r="2.1" /><text x="48"  y="42.8">6</text></g>
-              <g class="hot-label" data-for="5"><circle cx="62"  cy="42" r="2.1" /><text x="62"  y="42.8">5</text></g>
-              <g class="hot-label" data-for="9"><circle cx="23.5" cy="69.5" r="2.1" /><text x="23.5" y="70.3">9</text></g>
-            </g>
+            <g class="hotspot-labels"></g>
           </svg>
         </div>
         <!-- Vliering pane -->
         <div class="plan-pane" data-pane="vl">
-          <div class="vliering-card">
-            <img src="img/photo-zolder.jpg" alt="Vliering interieur" loading="lazy">
-            <div class="vliering-info">
-              <p class="vt-eyebrow">Vliering · ~40 m²</p>
-              <h3>Gedeelde logeerunit</h3>
-              <p>Een ruimte op de zolderverdieping die bewoners kunnen reserveren voor logés, familie en vrienden op bezoek. Niet apart verhuurbaar; onderdeel van de gemeenschappelijke voorzieningen.</p>
-              <button class="vliering-btn" id="vlieringBtn">Bekijk impressie</button>
-            </div>
-          </div>
+          <img class="plan-img" src="img/vliering.jpg" alt="Plattegrond vliering · Maerten's Tuyn" loading="lazy">
+          <svg class="plan-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <g class="hotspots">
+              <polygon class="hot" data-id="vl" points="52,12 82,12 82,55 52,55" />
+            </g>
+            <g class="hotspot-labels"></g>
+          </svg>
         </div>
 
         <!-- Tooltip floats above plan on hover -->
@@ -1748,14 +1735,39 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
       h.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openDrawer(id); } });
       h.setAttribute('tabindex', '0');
       h.setAttribute('role', 'button');
-      h.setAttribute('aria-label', `Woning ${id} · bekijk details`);
+      h.setAttribute('aria-label', id === 'vl' ? 'Vliering · bekijk details' : `Woning ${id} · bekijk details`);
+    });
+    placeLabels();
+  }
+
+  function placeLabels(){
+    document.querySelectorAll('.plan-pane').forEach(pane => {
+      const lg = pane.querySelector('.hotspot-labels');
+      if(!lg) return;
+      lg.innerHTML = '';
+      pane.querySelectorAll('.hot').forEach(h => {
+        const id = h.dataset.id;
+        if(id === 'vl') return;
+        const pts = h.getAttribute('points').trim().split(/\s+/).map(p => p.split(',').map(Number));
+        let cx=0, cy=0; pts.forEach(p => { cx+=p[0]; cy+=p[1]; });
+        cx/=pts.length; cy/=pts.length;
+        const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+        g.setAttribute('class','hot-label'); g.setAttribute('data-for', id);
+        g.innerHTML = `<circle cx="${cx}" cy="${cy}" r="2.1"></circle><text x="${cx}" y="${cy+0.75}">${id}</text>`;
+        lg.appendChild(g);
+      });
     });
   }
 
   function showTooltip(e, id){
-    const w = woningen[id];
-    tooltip.querySelector('.tt-num').textContent = `Woning ${id}`;
-    tooltip.querySelector('.tt-meta').textContent = `Type ${w.type} · ${w.m2} m² · €${w.huur.toLocaleString('nl-NL')}/mnd`;
+    if(id === 'vl'){
+      tooltip.querySelector('.tt-num').textContent = 'Vliering';
+      tooltip.querySelector('.tt-meta').textContent = '40 m² · gedeelde logeerunit';
+    } else {
+      const w = woningen[id];
+      tooltip.querySelector('.tt-num').textContent = `Woning ${id}`;
+      tooltip.querySelector('.tt-meta').textContent = `Type ${w.type} · ${w.m2} m² · €${w.huur.toLocaleString('nl-NL')}/mnd`;
+    }
     tooltip.classList.add('show');
     moveTooltip(e);
   }
@@ -1885,7 +1897,7 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   }
 
   // Vliering big button → opens drawer
-  document.getElementById('vlieringBtn').addEventListener('click', () => openDrawer('vl'));
+  var _vb = document.getElementById('vlieringBtn'); if(_vb) _vb.addEventListener('click', () => openDrawer('vl'));
 
   // Close handlers
   drawer.querySelector('.drawer-close').addEventListener('click', closeDrawer);
