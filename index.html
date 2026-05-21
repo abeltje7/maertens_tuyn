@@ -931,6 +931,13 @@
 
     /* Grids -> stack */
     .stat-grid { grid-template-columns: 1fr 1fr; }
+    .stat-box { padding: 1.5rem 0.8rem; }
+    .stat-val { font-size: 2rem; overflow-wrap: anywhere; }
+    .stat-label { font-size: 0.72rem; }
+    .snapshot-body { grid-template-columns: 1fr; gap: 2rem; }
+    /* Hero title: shrink + allow wrap so it never overflows narrow phones */
+    .hero-title { font-size: clamp(2.5rem, 11vw, 3.6rem); overflow-wrap: break-word; max-width: 100%; }
+    .hero-eyebrow, .section-label { overflow-wrap: anywhere; }
     .two-col { grid-template-columns: 1fr; gap: 2rem; }
     .three-col { grid-template-columns: 1fr !important; }
     .inline-stats { grid-template-columns: 1fr; }
