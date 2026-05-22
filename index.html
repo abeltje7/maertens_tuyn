@@ -1995,15 +1995,18 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     +'.cm-editable:focus{outline:2px solid #2b6cb0;background:rgba(43,108,176,.06)}'
     +'.cm-img-editable{outline:2px dashed #c08a2b;outline-offset:2px;cursor:pointer}'
     +'#cm-toolbar{position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#13243a;color:#fff;'
-    +'display:flex;gap:.6rem;align-items:center;padding:.6rem .9rem;font:14px/1.35 system-ui,Segoe UI,sans-serif;flex-wrap:wrap;box-shadow:0 -2px 12px rgba(0,0,0,.3)}'
-    +'#cm-toolbar button{font:inherit;padding:.55rem 1rem;border:0;border-radius:5px;cursor:pointer;font-weight:600}'
-    +'#cm-toolbar .cm-dl{background:#3a8a4f;color:#fff}#cm-toolbar .cm-reset{background:#8a3a3a;color:#fff}'
-    +'#cm-toolbar .cm-note{opacity:.9;flex:1;min-width:220px;font-weight:400}';
+    +'display:flex;gap:.5rem;align-items:center;padding:.55rem .8rem;font:13px/1.3 system-ui,Segoe UI,sans-serif;flex-wrap:wrap;box-shadow:0 -2px 12px rgba(0,0,0,.3)}'
+    +'#cm-toolbar button,#cm-toolbar select{font:inherit;padding:.45rem .6rem;border:0;border-radius:5px;cursor:pointer;background:#27425f;color:#fff}'
+    +'#cm-toolbar button:hover{background:#345a80}'
+    +'#cm-toolbar .cm-sep{width:1px;height:22px;background:#3c5a7a;margin:0 .2rem}'
+    +'#cm-toolbar .cm-dl{background:#3a8a4f;font-weight:600}#cm-toolbar .cm-reset{background:#8a3a3a}'
+    +'#cm-toolbar input[type=color]{width:30px;height:30px;padding:0;border:0;background:none;cursor:pointer}'
+    +'#cm-toolbar .cm-note{opacity:.9;flex:1;min-width:170px;font-weight:400}'
+    +'#cm-toolbar .cm-sw{width:22px;height:22px;border-radius:4px;border:1px solid #fff5;padding:0}';
   document.head.appendChild(st);
 
   document.querySelectorAll(SEL).forEach(function(el){
-    if(el.closest(EXC)) return;
-    if(el.closest('#cm-toolbar')) return;
+    if(el.closest(EXC)||el.closest('#cm-toolbar')) return;
     if(el.closest('[contenteditable="true"]')) return;
     el.setAttribute('contenteditable','true');
     el.setAttribute('spellcheck','false');
@@ -2016,25 +2019,76 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   var curImg=null;
   fileInput.addEventListener('change',function(){
     var file=this.files&&this.files[0]; if(!file||!curImg){this.value='';return;}
-    var rd=new FileReader();
-    rd.onload=function(){ curImg.src=rd.result; };
+    var rd=new FileReader(); rd.onload=function(){ curImg.src=rd.result; };
     rd.readAsDataURL(file); this.value='';
   });
   document.querySelectorAll('img').forEach(function(img){
-    if(img.closest(EXC)) return;
-    if(img.classList.contains('plan-img')) return;
+    if(img.closest(EXC)||img.classList.contains('plan-img')) return;
     img.classList.add('cm-img-editable');
     img.addEventListener('click',function(e){ e.preventDefault(); curImg=img; fileInput.click(); });
   });
 
+  /* selectie onthouden zodat knoppen de markering niet wissen */
+  var savedRange=null;
+  document.addEventListener('selectionchange',function(){
+    var sel=window.getSelection(); if(!sel.rangeCount) return;
+    var r=sel.getRangeAt(0), n=r.commonAncestorContainer;
+    var el=n.nodeType===1?n:n.parentElement;
+    if(el && el.closest('[contenteditable="true"]') && !sel.isCollapsed) savedRange=r.cloneRange();
+  });
+  function restore(){ if(!savedRange) return false; var s=window.getSelection(); s.removeAllRanges(); s.addRange(savedRange); return true; }
+  function exec(cmd,val){ if(!restore()) return; try{document.execCommand('styleWithCSS',false,true);}catch(e){} document.execCommand(cmd,false,val||null); }
+  function styleSel(prop,val){
+    if(!restore()) return; var sel=window.getSelection(); if(sel.isCollapsed) return;
+    var range=sel.getRangeAt(0); var span=document.createElement('span'); span.style[prop]=val;
+    try{ range.surroundContents(span); }
+    catch(e){ var frag=range.extractContents(); span.appendChild(frag); range.insertNode(span); }
+    sel.removeAllRanges(); savedRange=null;
+  }
+
   var tb=document.createElement('div'); tb.id='cm-toolbar';
+  function btn(label,title,fn){ var b=document.createElement('button'); b.textContent=label; b.title=title||label;
+    b.addEventListener('mousedown',function(e){e.preventDefault();}); b.addEventListener('click',fn); return b; }
+  function sep(){ var d=document.createElement('span'); d.className='cm-sep'; return d; }
+
+  tb.appendChild(btn('B','Vet',function(){exec('bold');}));
+  var bi=btn('I','Cursief',function(){exec('italic');}); bi.style.fontStyle='italic'; tb.appendChild(bi);
+  var bu=btn('U','Onderstreept',function(){exec('underline');}); bu.style.textDecoration='underline'; tb.appendChild(bu);
+  tb.appendChild(sep());
+
+  var fontSel=document.createElement('select'); fontSel.title='Lettertype';
+  [['','Lettertype'],["'Cormorant Garamond', serif",'Cormorant (koppen)'],["'DM Sans', sans-serif",'DM Sans (tekst)'],["Georgia, serif",'Georgia'],["Arial, sans-serif",'Arial']].forEach(function(o){
+    var op=document.createElement('option'); op.value=o[0]; op.textContent=o[1]; fontSel.appendChild(op); });
+  fontSel.addEventListener('mousedown',function(){restore();});
+  fontSel.addEventListener('change',function(){ if(this.value) styleSel('fontFamily',this.value); this.selectedIndex=0; });
+  tb.appendChild(fontSel);
+
+  var sizeSel=document.createElement('select'); sizeSel.title='Tekstgrootte';
+  [['','Grootte'],['0.8em','Klein'],['1em','Normaal'],['1.3em','Groot'],['1.7em','Extra groot'],['2.4em','Reusachtig']].forEach(function(o){
+    var op=document.createElement('option'); op.value=o[0]; op.textContent=o[1]; sizeSel.appendChild(op); });
+  sizeSel.addEventListener('mousedown',function(){restore();});
+  sizeSel.addEventListener('change',function(){ if(this.value) styleSel('fontSize',this.value); this.selectedIndex=0; });
+  tb.appendChild(sizeSel);
+
+  var color=document.createElement('input'); color.type='color'; color.value='#1B2A3B'; color.title='Tekstkleur';
+  color.addEventListener('mousedown',function(){restore();});
+  color.addEventListener('input',function(){ styleSel('color',this.value); });
+  tb.appendChild(color);
+  [['#1B2A3B','Navy'],['#4A7FA5','Staalblauw'],['#3D6B50','Groen'],['#C8C0B0','Warm'],['#888888','Grijs']].forEach(function(c){
+    var b=document.createElement('button'); b.className='cm-sw'; b.style.background=c[0]; b.title=c[1];
+    b.addEventListener('mousedown',function(e){e.preventDefault();});
+    b.addEventListener('click',function(){ styleSel('color',c[0]); }); tb.appendChild(b); });
+
+  tb.appendChild(btn('⨯ opmaak','Opmaak van selectie wissen',function(){exec('removeFormat');}));
+  tb.appendChild(sep());
+
   var note=document.createElement('span'); note.className='cm-note';
-  note.textContent='Bewerkmodus actief — klik op tekst om te typen, klik op een foto om te vervangen. Klaar? Klik Download en upload het bestand naar GitHub.';
-  var dl=document.createElement('button'); dl.className='cm-dl'; dl.textContent='↓ Download index.html';
-  var rs=document.createElement('button'); rs.className='cm-reset'; rs.textContent='Reset';
-  tb.appendChild(note); tb.appendChild(dl); tb.appendChild(rs);
+  note.textContent='Selecteer tekst en gebruik de knoppen. Klik op een foto om te vervangen. Klaar? Download en upload naar GitHub.';
+  tb.appendChild(note);
+  var dl=document.createElement('button'); dl.className='cm-dl'; dl.textContent='↓ Download index.html'; tb.appendChild(dl);
+  var rs=document.createElement('button'); rs.className='cm-reset'; rs.textContent='Reset'; tb.appendChild(rs);
   document.body.appendChild(tb);
-  document.body.style.paddingBottom='90px';
+  document.body.style.paddingBottom='110px';
 
   rs.addEventListener('click',function(){ if(confirm('Alle niet-opgeslagen wijzigingen verwijderen en opnieuw laden?')) location.reload(); });
   dl.addEventListener('click',function(){
