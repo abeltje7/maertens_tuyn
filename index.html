@@ -1980,5 +1980,78 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   });
 })();
 </script>
+
+<!-- ─── BEWERKMODUS (alleen actief met ?edit=1 in de URL) ─── -->
+<script id="cm-edit-script">
+(function(){
+  if(!/[?&]edit=1(\b|$)/.test(location.search)) return;
+  var EXC = '#cm-toolbar, nav, .nav-toggle, .plan-svg, #drawer, .hotspots, .hotspot-labels, svg, script, style, .slider-handle';
+  var SEL = 'p,h1,h2,h3,h4,h5,h6,li,td,th,figcaption,blockquote,'
+          + '.fig-caption,.section-label,.sec-title,.lead,.body-text,.h2,.h3,'
+          + '.quote-text,.quote-source,.stat-val,.stat-label,.hero-eyebrow,.hero-title,'
+          + '.footer-brand,.footer-meta,.swot-cell h4,.swot-cell li';
+  var st=document.createElement('style'); st.id='cm-edit-style';
+  st.textContent='.cm-editable{outline:1px dashed rgba(40,90,140,.55);outline-offset:2px;cursor:text}'
+    +'.cm-editable:focus{outline:2px solid #2b6cb0;background:rgba(43,108,176,.06)}'
+    +'.cm-img-editable{outline:2px dashed #c08a2b;outline-offset:2px;cursor:pointer}'
+    +'#cm-toolbar{position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#13243a;color:#fff;'
+    +'display:flex;gap:.6rem;align-items:center;padding:.6rem .9rem;font:14px/1.35 system-ui,Segoe UI,sans-serif;flex-wrap:wrap;box-shadow:0 -2px 12px rgba(0,0,0,.3)}'
+    +'#cm-toolbar button{font:inherit;padding:.55rem 1rem;border:0;border-radius:5px;cursor:pointer;font-weight:600}'
+    +'#cm-toolbar .cm-dl{background:#3a8a4f;color:#fff}#cm-toolbar .cm-reset{background:#8a3a3a;color:#fff}'
+    +'#cm-toolbar .cm-note{opacity:.9;flex:1;min-width:220px;font-weight:400}';
+  document.head.appendChild(st);
+
+  document.querySelectorAll(SEL).forEach(function(el){
+    if(el.closest(EXC)) return;
+    if(el.closest('#cm-toolbar')) return;
+    if(el.closest('[contenteditable="true"]')) return;
+    el.setAttribute('contenteditable','true');
+    el.setAttribute('spellcheck','false');
+    el.classList.add('cm-editable');
+  });
+
+  var fileInput=document.createElement('input');
+  fileInput.type='file'; fileInput.accept='image/*'; fileInput.id='cm-file'; fileInput.style.display='none';
+  document.body.appendChild(fileInput);
+  var curImg=null;
+  fileInput.addEventListener('change',function(){
+    var file=this.files&&this.files[0]; if(!file||!curImg){this.value='';return;}
+    var rd=new FileReader();
+    rd.onload=function(){ curImg.src=rd.result; };
+    rd.readAsDataURL(file); this.value='';
+  });
+  document.querySelectorAll('img').forEach(function(img){
+    if(img.closest(EXC)) return;
+    if(img.classList.contains('plan-img')) return;
+    img.classList.add('cm-img-editable');
+    img.addEventListener('click',function(e){ e.preventDefault(); curImg=img; fileInput.click(); });
+  });
+
+  var tb=document.createElement('div'); tb.id='cm-toolbar';
+  var note=document.createElement('span'); note.className='cm-note';
+  note.textContent='Bewerkmodus actief — klik op tekst om te typen, klik op een foto om te vervangen. Klaar? Klik Download en upload het bestand naar GitHub.';
+  var dl=document.createElement('button'); dl.className='cm-dl'; dl.textContent='↓ Download index.html';
+  var rs=document.createElement('button'); rs.className='cm-reset'; rs.textContent='Reset';
+  tb.appendChild(note); tb.appendChild(dl); tb.appendChild(rs);
+  document.body.appendChild(tb);
+  document.body.style.paddingBottom='90px';
+
+  rs.addEventListener('click',function(){ if(confirm('Alle niet-opgeslagen wijzigingen verwijderen en opnieuw laden?')) location.reload(); });
+  dl.addEventListener('click',function(){
+    document.querySelectorAll('[contenteditable="true"]').forEach(function(n){ n.blur&&n.blur(); });
+    var clone=document.documentElement.cloneNode(true);
+    clone.querySelectorAll('#cm-toolbar,#cm-edit-style,#cm-file').forEach(function(n){n.remove();});
+    clone.querySelectorAll('[contenteditable]').forEach(function(n){n.removeAttribute('contenteditable');n.removeAttribute('spellcheck');});
+    clone.querySelectorAll('.cm-editable').forEach(function(n){n.classList.remove('cm-editable');});
+    clone.querySelectorAll('.cm-img-editable').forEach(function(n){n.classList.remove('cm-img-editable');});
+    var b=clone.querySelector('body'); if(b) b.style.paddingBottom='';
+    var html='<!DOCTYPE html>\n'+clone.outerHTML;
+    var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+    var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='index.html';
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },1500);
+  });
+})();
+</script>
 </body>
 </html>
